@@ -1,0 +1,6 @@
+(library
+ (name jsip_market_data)
+ (public_name jsip-exchange.jsip_market_data)
+ (libraries jsip_types core yojson)
+ (preprocess
+  (pps ppx_jane)))

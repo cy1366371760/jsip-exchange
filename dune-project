@@ -36,6 +36,7 @@
   core
   core_unix
   core_bench
+  yojson
   ppx_jane
   ppx_html
   js_of_ocaml-ppx
