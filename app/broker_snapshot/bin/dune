@@ -1,0 +1,7 @@
+(executable
+ (name main)
+ (public_name jsip-broker-snapshot)
+ (package jsip-exchange)
+ (libraries jsip_broker_data core core_unix.command_unix)
+ (preprocess
+  (pps ppx_jane)))

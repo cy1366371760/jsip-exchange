@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "provider": "trading212",
+  "environment": "demo",
+  "observed_at": "2026-01-04T12:00:00Z",
+  "datasets": [
+    {"kind":"account_summary","status":"ok","http_status":200,"pages":1,"records":[
+      {"id":999,"currency":"GBP","totalValue":"100.000000000000000001",
+       "cash":{"availableToTrade":"12.25"},"investments":{"currentValue":"87.750000000000000001"}}
+    ]},
+    {"kind":"instruments","status":"ok","http_status":200,"pages":1,"records":[
+      {"ticker":"EXAMPLE_US_EQ","name":"Fixture company","currencyCode":"USD","isin":"US0000000000","extraMetadata":"retained"}
+    ]},
+    {"kind":"exchanges","status":"ok","http_status":200,"pages":1,"records":[]},
+    {"kind":"positions","status":"ok","http_status":200,"pages":1,"records":[
+      {"instrument":{"ticker":"EXAMPLE_UK_EQ","name":"Fixture UK company","currency":"GBX"},
+       "quantity":"0.1234567890123456789","currentPrice":"123.456789",
+       "averagePricePaid":"100.00001","walletImpact":{"currency":"GBP","fxImpact":"0.01"}}
+    ]},
+    {"kind":"pending_orders","status":"ok","http_status":200,"pages":1,"records":[]},
+    {"kind":"historical_orders","status":"ok","http_status":200,"pages":1,"records":[
+      {"order":{"id":102,"ticker":"EXAMPLE_US_EQ","side":"SELL","status":"FILLED",
+        "createdAt":"2026-01-03T09:00:00Z","currency":"GBP","value":"1.5",
+        "instrument":{"ticker":"EXAMPLE_US_EQ","name":"Fixture company","currency":"USD"}},
+       "fill":{"id":202,"filledAt":"2026-01-03T10:00:00Z","quantity":"0.00000001","price":"192.123456789","type":"TRADE"}},
+      {"order":{"id":101,"ticker":"EXAMPLE_US_EQ","side":"BUY","status":"FILLED",
+        "createdAt":"2026-01-02T09:00:00Z","currency":"GBP","quantity":"0.123456789",
+        "instrument":{"ticker":"EXAMPLE_US_EQ","name":"Fixture company","currency":"USD"}},
+       "fill":{"id":201,"filledAt":"2026-01-02T10:00:00Z","quantity":"0.123456789","price":"191.000001","type":"TRADE"}}
+    ]},
+    {"kind":"dividends","status":"ok","http_status":200,"pages":1,"records":[
+      {"reference":"fixture-dividend","ticker":"EXAMPLE_US_EQ","paidOn":"2026-01-03T10:00:00Z",
+       "quantity":"0.123456789","amount":"0.00123456789","currency":"GBP"}
+    ]},
+    {"kind":"transactions","status":"ok","http_status":200,"pages":1,"records":[
+      {"reference":"fixture-deposit","type":"DEPOSIT","dateTime":"2026-01-01T10:00:00Z","amount":"100","currency":"GBP"}
+    ]},
+    {"kind":"reports","status":"ok","http_status":200,"pages":1,"records":[]},
+    {"kind":"pies","status":"gone","http_status":410,"pages":0,"records":[]},
+    {"kind":"pending_orders_details","status":"ok","http_status":200,"pages":0,"records":[]},
+    {"kind":"pies_details","status":"parent_unavailable","http_status":0,"pages":0,"records":[]},
+    {"kind":"report_files","status":"ok","http_status":200,"pages":0,"records":[]},
+    {"kind":"report_rows","status":"ok","http_status":200,"pages":0,"records":[
+      {"reportId":77,"rowNumber":2,"columns":{"Action":"Market buy","No. of shares":"0.123456789","Price / share":"191.000001","Currency (Price / share)":"USD"}}
+    ]}
+  ]
+}

@@ -1,0 +1,7 @@
+(library
+ (name jsip_broker_data_test)
+ (libraries jsip_broker_data core)
+ (inline_tests
+  (deps fixtures/trading212_snapshot.json))
+ (preprocess
+  (pps ppx_jane)))
