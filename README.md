@@ -1,5 +1,17 @@
 # JSIP Exchange
 
+## Tushare historical A-share data
+
+The historical market-data application loads integer CSV exports into
+`Jsip_market_data.Historical_bar.t` and deterministically replays them to an
+OCaml callback. See [Tushare history](doc/tushare-history.md) for the real-data
+fetch/export commands, public interfaces, units and offline tests.
+
+```sh
+opam exec -- dune exec jsip-historical-replay -- \
+  -input ../data/exports/jsip_a_share_bars.csv
+```
+
 A simplified stock exchange built in OCaml. Over the course of this project
 you will extend and improve every layer of the system — from the core data
 structures to the network protocol.

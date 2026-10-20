@@ -5,6 +5,63 @@ open Jsip_market_data
 let fixture = In_channel.read_all "fixtures/tushare_daily.json"
 let decode_fixture () = Tushare_daily.decode fixture |> Or_error.ok_exn
 
+let%expect_test
+    "Python CSV contract loads the same JSIP bars as Tushare JSON"
+  =
+  let bars =
+    Historical_csv.load "fixtures/historical_bars.csv" |> Or_error.ok_exn
+  in
+  [%test_result: bool]
+    (List.equal Historical_bar.equal bars (decode_fixture ()))
+    ~expect:true;
+  Historical_replay.iter (List.rev bars) ~f:(fun bar ->
+    print_endline (Historical_bar.to_string bar));
+  [%expect
+    {|
+    000001.SZ 2024-01-02 open=9.09 high=9.22 low=9.05 close=9.21 volume=52627158 shares
+    000001.SZ 2024-01-03 open=9.19 high=9.33 low=9.15 close=9.20 volume=73361027 shares
+    000001.SZ 2024-01-04 open=9.19 high=9.20 low=9.02 close=9.09 volume=83737449 shares
+    000001.SZ 2024-01-05 open=9.17 high=9.19 low=9.05 close=9.06 volume=66723129 shares
+    000001.SZ 2024-01-08 open=9.10 high=9.10 low=8.95 close=9.00 volume=48165852 shares
+    |}]
+;;
+
+let%expect_test "CSV rejects malformed histories before any consumer runs" =
+  let header =
+    "symbol,date,open_cents,high_cents,low_cents,close_cents,volume_shares\n"
+  in
+  let row = "000001.SZ,2024-01-02,909,922,905,921,12345\n" in
+  List.iter
+    [ "schema", "bad-header\n" ^ row
+    ; "row width", header ^ "000001.SZ,2024-01-02\n"
+    ; "date", header ^ "000001.SZ,2024-02-30,909,922,905,921,1\n"
+    ; "decimal price", header ^ "000001.SZ,2024-01-02,9.09,922,905,921,1\n"
+    ; ( "overflow"
+      , header ^ "000001.SZ,2024-01-02,9223372036854775807,922,905,921,1\n" )
+    ; "OHLC", header ^ "000001.SZ,2024-01-02,909,900,905,921,1\n"
+    ; "negative volume", header ^ "000001.SZ,2024-01-02,909,922,905,921,-1\n"
+    ; "duplicate", header ^ row ^ row
+    ; "symbol", header ^ "bad,2024-01-02,909,922,905,921,1\n"
+    ]
+    ~f:(fun (name, text) ->
+      printf "%s: %b\n" name (Or_error.is_error (Historical_csv.decode text)));
+  [%test_result: int]
+    (Historical_csv.decode header |> Or_error.ok_exn |> List.length)
+    ~expect:0;
+  [%expect
+    {|
+    schema: true
+    row width: true
+    date: true
+    decimal price: true
+    overflow: true
+    OHLC: true
+    negative volume: true
+    duplicate: true
+    symbol: true
+    |}]
+;;
+
 let%expect_test "daily fixture decodes to chronological internal bars" =
   decode_fixture ()
   |> List.iter ~f:(fun bar -> print_endline (Historical_bar.to_string bar));

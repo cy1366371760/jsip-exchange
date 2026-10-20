@@ -2,6 +2,6 @@
  (name jsip_market_data_test)
  (libraries jsip_market_data core expect_test_helpers_core)
  (inline_tests
-  (deps fixtures/tushare_daily.json))
+  (deps fixtures/tushare_daily.json fixtures/historical_bars.csv))
  (preprocess
   (pps ppx_jane)))
